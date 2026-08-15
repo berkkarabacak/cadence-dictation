@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Checkout — Cadence Pro</title>
+  <meta name="description" content="Cadence Pro is $15 a month or $144 a year. Unlimited dictation. Cancel whenever." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+<div class="promo">Pro is unlimited dictation. Free stays at 2,000 words a week. <a href="pricing.html">Compare plans</a></div>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a class="brand" href="index.html" aria-label="Cadence home">
+      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+      Cadence
+    </a>
+    <nav class="nav-links">
+      <a href="index.html#product">Product</a>
+      <a href="compare.html">Compare</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="demo.html">Demo</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost btn-sm" href="app.html">Open the app</a>
+      <a class="btn btn-ink btn-sm" href="pricing.html">Plans</a>
+      <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
+    </div>
+  </div>
+</header>
+
+<main data-checkout>
+  <section class="price-hero checkout-hero">
+    <div class="wrap">
+      <p class="kicker">Checkout</p>
+      <h1>Unlock unlimited<br>words. <em>Keep talking.</em></h1>
+      <p class="lede" style="margin:18px auto 0">Pro is $15 a month, or $144 a year ($12/mo). No seat minimum. Cancel from Plan &amp; billing whenever. This page is ready for a Stripe Payment Link or Checkout Session.</p>
+    </div>
+  </section>
+
+  <section style="padding-top:8px;padding-bottom:40px">
+    <div class="wrap">
+      <div class="checkout-note" data-checkout-note hidden></div>
+      <div class="checkout-grid">
+        <article class="price-card checkout-card">
+          <p class="who">Billed monthly</p>
+          <h2>Monthly</h2>
+          <p class="amt">$15<small>/mo</small></p>
+          <p class="fine" style="margin-top:8px">Cancel any time. Next bill is one month out.</p>
+          <ul>
+            <li>Unlimited dictation</li>
+            <li>Everything on Free</li>
+            <li>Priority support</li>
+            <li>14-day trial if you want to try first</li>
+          </ul>
+          <button class="btn btn-ghost" type="button" data-checkout-pay="monthly">Continue to payment</button>
+        </article>
+        <article class="price-card checkout-card is-featured">
+          <p class="who">Best value · 20% off</p>
+          <h2>Annual</h2>
+          <p class="amt">$144<small>/yr</small></p>
+          <p class="fine" style="margin-top:8px">$12/mo, billed once a year.</p>
+          <ul>
+            <li>Unlimited dictation</li>
+            <li>Everything on Free</li>
+            <li>Priority support</li>
+            <li>Two months free versus monthly</li>
+          </ul>
+          <button class="btn btn-ink" type="button" data-checkout-pay="annual">Continue to payment</button>
+        </article>
+      </div>
+      <p class="fine checkout-fine">Payment links live in <code>config.js</code> as <code>CADENCE_STRIPE_PAYMENT_LINKS</code>. Leave them empty and we start a 14-day Pro trial locally so you can keep working — no card is charged. A real Stripe return URL can use <code>checkout.html?success=1</code>.</p>
+      <p class="fine" style="margin-top:10px;text-align:center"><a href="pricing.html" style="text-decoration:underline;text-underline-offset:3px">Back to pricing</a> · <a href="app.html" style="text-decoration:underline;text-underline-offset:3px">Stay on Free</a></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="brand" href="index.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Cadence
+      </a>
+      <p class="fine" style="margin-top:10px">Speak naturally. Send the written version.</p>
+    </div>
+    <nav>
+      <a href="index.html#product">Product</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="compare.html">Compare</a>
+      <a href="demo.html">Demo</a>
+      <a href="app.html">App</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="https://x.com" rel="noopener">X</a>
+      <a href="https://www.linkedin.com" rel="noopener">LinkedIn</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="billing.js"></script>
+<script src="site.js"></script>
+</body>
+</html>

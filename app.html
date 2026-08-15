@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cadence App — Hold to talk</title>
+  <meta name="description" content="Hold to talk. Cadence cleans filler, corrections, and repeats, then types the line you meant." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="app-body">
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Cadence
+      </a>
+      <nav class="nav-links">
+        <a href="index.html#product">Product</a>
+        <a href="compare.html">Compare</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="demo.html">Demo</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-ghost btn-sm" href="demo.html">Scripted rooms</a>
+        <a class="btn btn-ink btn-sm" href="checkout.html">Get Pro</a>
+        <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <div class="app-head">
+      <div>
+        <p class="kicker">In-browser dictation</p>
+        <h1>Hold. Speak. Send the clean line.</h1>
+        <p class="muted" style="margin-top:8px;max-width:36rem">This is a working microphone demo — Web Speech in the browser, then Cadence’s cleanup rules. Native apps type into whatever you have focused. Free is 2,000 cleaned words a week.</p>
+      </div>
+      <div class="stats"><span id="word-count">0 words</span> · <span id="app-status">Ready</span></div>
+    </div>
+
+    <div id="app-banner" class="banner" hidden></div>
+
+    <div class="app-toolbar">
+      <div class="tone-pills">
+        <button type="button" data-app-tone="formal">Formal</button>
+        <button type="button" class="is-on" data-app-tone="casual">Casual</button>
+        <button type="button" data-app-tone="very">Very casual</button>
+      </div>
+      <div class="toolbar-end">
+        <span class="plan-chip" id="plan-chip" aria-live="polite">0 / 2,000 words this week</span>
+        <button class="btn btn-ghost btn-sm" id="toggle-listen" type="button">Click to toggle</button>
+        <button class="btn btn-ghost btn-sm" id="copy-btn" type="button">Copy cleaned</button>
+        <button class="btn btn-ghost btn-sm" id="clear-btn" type="button">Clear</button>
+      </div>
+    </div>
+
+    <div class="mic-wrap">
+      <button class="mic" id="mic" type="button" aria-label="Hold to talk">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="9" y="3" width="6" height="11" rx="3"/>
+          <path d="M5 11a7 7 0 0 0 14 0"/>
+          <path d="M12 18v3"/>
+        </svg>
+      </button>
+      <p class="fine">Hold the disc to talk · release to stop · or use Click to toggle</p>
+    </div>
+
+    <div class="app-grid">
+      <section class="pane">
+        <h2>As spoken</h2>
+        <div id="raw-out" class="out"></div>
+      </section>
+      <section class="pane">
+        <h2>As written</h2>
+        <div id="clean-out" class="out"></div>
+      </section>
+    </div>
+
+    <section class="pane" style="margin-top:16px">
+      <h2>Composer — simulates typing into any app</h2>
+      <textarea id="composer" class="composer" placeholder="Cleaned text lands here. Edit freely, then copy."></textarea>
+    </section>
+  </div>
+
+  <dialog id="paywall" class="paywall" aria-labelledby="paywall-title">
+    <button type="button" class="paywall-close" id="paywall-close" aria-label="Close">×</button>
+    <p class="kicker">Free plan</p>
+    <h2 id="paywall-title">You've used this week's free words</h2>
+    <p class="paywall-body" id="paywall-body">The 2,000-word weekly allowance is used up. The counter resets next Monday. Start a 14-day Pro trial or go to checkout — both unlock unlimited dictation.</p>
+    <p class="paywall-remain" id="paywall-remain"></p>
+    <div class="paywall-actions">
+      <button type="button" class="btn btn-ink" id="paywall-trial">Start 14-day Pro trial</button>
+      <a class="btn btn-ghost" id="paywall-checkout" href="checkout.html">Go to checkout</a>
+    </div>
+    <p class="fine" style="margin-top:16px">Trial is local on this browser for now. No card is charged until Stripe is connected.</p>
+  </dialog>
+
+  <script src="config.js"></script>
+  <script src="billing.js"></script>
+  <script src="app.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

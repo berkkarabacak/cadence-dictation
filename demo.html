@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo rooms — Cadence</title>
+  <meta name="description" content="Four Cadence rooms: an AI prompt, a corrected text, a grocery list, and a drafted email." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="promo">Hold Control, or tap the disc — each room plays a spoken draft into a finished one.</div>
+  <header class="nav" id="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html">
+        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
+        Cadence
+      </a>
+      <nav class="nav-links">
+        <a href="index.html#product">Product</a>
+        <a href="compare.html">Compare</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="demo.html">Demo</a>
+      </nav>
+      <div class="nav-cta">
+        <a class="btn btn-ink btn-sm" href="app.html">Use your mic</a>
+        <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" style="padding-bottom:12px">
+      <div class="wrap">
+        <p class="kicker">Four rooms</p>
+        <h1 class="display" style="font-size:clamp(2.8rem,7vw,5.4rem)">Same voice.<br>Four <em>kinds</em> of writing.</h1>
+        <p class="hero-sub">Hold Control or tap the disc. Cadence walks a messy spoken take into a prompt, a text, a list, or a mail.</p>
+      </div>
+    </section>
+
+    <section style="padding-top:0">
+      <div class="wrap">
+        <div class="rooms-nav">
+          <button type="button" class="is-on" data-room="prompt">1 · AI prompt</button>
+          <button type="button" data-room="message">2 · Text a friend</button>
+          <button type="button" data-room="list">3 · Grocery list</button>
+          <button type="button" data-room="email">4 · Draft an email</button>
+        </div>
+
+        <div class="stage">
+          <div class="stage-bar">
+            <span class="live-tag"><i class="live-dot"></i> <span id="room-status">Ready</span></span>
+            <span>Hold Control · or tap the disc</span>
+          </div>
+          <div class="stage-grid">
+            <div class="stage-col">
+              <div class="stage-label">As spoken</div>
+              <p id="room-raw" class="stage-text is-raw">Hold Control, or tap the button, and talk.</p>
+              <div class="chips">
+                <span class="flag" id="chip-fill">Filler</span>
+                <span class="flag" id="chip-corr">Correction</span>
+                <span class="flag" id="chip-rep">Repetition</span>
+              </div>
+            </div>
+            <div class="stage-col">
+              <div class="stage-label">As written</div>
+              <pre id="room-out" class="stage-text is-clean" style="font-family:inherit;white-space:pre-wrap"></pre>
+            </div>
+          </div>
+        </div>
+
+        <div class="mic-wrap">
+          <button class="mic" id="hold-talk" type="button" aria-label="Hold to talk" style="background:#1B1916;color:#F3EDE3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+              <rect x="9" y="3" width="6" height="11" rx="3"/>
+              <path d="M5 11a7 7 0 0 0 14 0"/>
+              <path d="M12 18v3"/>
+            </svg>
+          </button>
+          <p class="hold-hint">These rooms play a scripted take so the cleanup is visible without a mic. For live speech, open the app.</p>
+          <p><a class="btn btn-ink" href="app.html">Open live dictation</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <a class="brand" href="index.html">Cadence</a>
+      <nav>
+        <a href="pricing.html">Pricing</a>
+        <a href="app.html">App</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </nav>
+    </div>
+  </footer>
+  <script src="site.js"></script>
+</body>
+</html>
