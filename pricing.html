@@ -1,246 +1,237 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pricing — Cadence</title>
-  <meta name="description" content="Cadence is free to start. Pro is $15 a month or $12 billed annually. Enterprise for teams that need SSO and audit logs." />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<div class="promo">Students and educators: ask us about 50% off Pro. <a href="app.html">Try free first</a></div>
-<header class="nav" id="nav">
-  <div class="nav-inner">
-    <a class="brand" href="index.html" aria-label="Cadence home">
-      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-      Cadence
-    </a>
-    <nav class="nav-links">
-      <a href="index.html#product">Product</a>
-      <a href="compare.html">Compare</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="demo.html">Demo</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="app.html">Open the app</a>
-      <a class="btn btn-ink btn-sm" href="app.html">Try free</a>
-      <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
-    </div>
-  </div>
-</header>
-<main>
-  <section class="price-hero">
-    <div class="wrap">
-      <p class="kicker">Pricing</p>
-      <h1>Start talking.<br>Pay when you <em>outgrow</em> the week.</h1>
-      <p class="lede" style="margin:18px auto 0">Download nothing to try the browser demo. Native apps: no card, no countdown on Free. Cancel Pro whenever.</p>
-      <div class="bill-toggle" role="tablist">
-        <button type="button" data-bill="monthly">Monthly</button>
-        <button type="button" class="is-on" data-bill="annual">Annual</button>
-      </div>
-      <p class="save-note">Annual Pro is $12/user/mo — 20% off</p>
-    </div>
-  </section>
-  <section style="padding-top:12px">
-    <div class="wrap">
-      <div class="price-grid">
-        <article class="price-card">
-          <p class="who">For individuals</p>
-          <h2>Free</h2>
-          <p class="amt">$0<small>/mo</small></p>
-          <p class="fine" style="margin-top:8px">No card. Ever, on this plan.</p>
-          <p class="fine" data-billing-remaining style="margin-top:6px">2,000 words left this week on Free.</p>
-          <ul>
-            <li>Dictation in 100+ languages, every app</li>
-            <li>2,000 words/week on desktop</li>
-            <li>1,000 words/week on iPhone</li>
-            <li>Unlimited words on Android</li>
-            <li>Notetaker for meetings and voice memos (Mac)</li>
-            <li>Speaker labels and questions on your notes</li>
-            <li>Learns names and jargon</li>
-            <li>Privacy Mode, any time</li>
-          </ul>
-          <a class="btn btn-ghost" href="app.html">Start free</a>
-        </article>
-        <article class="price-card is-featured">
-          <p class="who">For individuals and teams</p>
-          <h2>Pro</h2>
-          <p class="amt" id="pro-amt">$12<small>/user/mo</small></p>
-          <p class="fine" id="pro-note" style="margin-top:8px">Billed $144/year · 20% off</p>
-          <ul>
-            <li>Everything in Free</li>
-            <li>Unlimited dictation</li>
-            <li>More meetings, kept longer</li>
-            <li>Advanced models and early features</li>
-            <li>Priority support</li>
-            <li>Centralized billing and seats — no minimum</li>
-            <li>Shared dictionary and snippets</li>
-            <li>14-day Pro trial from Free</li>
-          </ul>
-          <a class="btn btn-ink" href="checkout.html">Continue to checkout</a>
-        </article>
-        <article class="price-card">
-          <p class="who">For security-minded teams</p>
-          <h2>Enterprise</h2>
-          <p class="amt" style="font-size:2.4rem">Contact us</p>
-          <p class="fine" style="margin-top:8px">Volume pricing, written by sales.</p>
-          <ul>
-            <li>Everything in Pro</li>
-            <li>SSO / SAML and SCIM</li>
-            <li>Audit logs, MDM, domain controls</li>
-            <li>Enforced Privacy Mode</li>
-            <li>DPA and BAA paperwork on request</li>
-            <li>Dedicated support and admin seats</li>
-            <li>Advanced usage analytics</li>
-            <li>MSA and DPA</li>
-          </ul>
-          <a class="btn btn-ghost" href="mailto:hello@cadence.example">Talk to sales</a>
-        </article>
-      </div>
-      <p class="fine" style="margin-top:18px;text-align:center">Notetaker is Mac-only today. It does not join calls as a bot. Windows is next. Students and educators can write in for 50% off Pro.</p>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Compare</p>
-        <h2>What sits on each plan.</h2>
-      </div>
-      <div style="overflow:auto">
-        <table class="compare-table">
-          <thead>
-            <tr><th></th><th>Free</th><th>Pro</th><th>Enterprise</th></tr>
-            <tr><th></th><th>$0/mo</th><th id="table-pro-price">$12 / user / mo</th><th>Contact</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Dictation in every app</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Word limit</td><td>2,000/wk desktop · 1,000 iPhone · unlimited Android</td><td class="yes">Unlimited</td><td class="yes">Unlimited</td></tr>
-            <tr><td>100+ languages</td><td class="yes">Yes</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Custom dictionary &amp; snippets</td><td class="yes">Personal</td><td class="yes">Shared</td><td class="yes">Shared + admin</td></tr>
-            <tr><td>Notetaker (Mac)</td><td class="yes">Weekly cap</td><td class="yes">Higher limits</td><td>Rolling out</td></tr>
-            <tr><td>Meeting retention</td><td>Standard</td><td>Extended</td><td>Extended</td></tr>
-            <tr><td>Advanced models</td><td class="no">—</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Centralized billing</td><td class="no">—</td><td class="yes">Yes</td><td class="yes">Yes</td></tr>
-            <tr><td>Support</td><td>Standard</td><td>Priority</td><td>Dedicated</td></tr>
-            <tr><td>Privacy Mode</td><td>Optional</td><td>Optional</td><td>Enforced</td></tr>
-            <tr><td>SSO / SAML / SCIM</td><td class="no">—</td><td class="no">—</td><td class="yes">Yes</td></tr>
-            <tr><td>Audit logs &amp; MDM</td><td class="no">—</td><td class="no">—</td><td class="yes">Yes</td></tr>
-            <tr><td>BAA / DPA</td><td class="no">—</td><td class="no">—</td><td class="yes">On request</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">A rough sketch</p>
-        <h2>If you spoke the words you currently type.</h2>
-        <p>This is not a Cadence benchmark. It uses everyday speaking versus typing speeds — about 220 wpm spoken, 45 wpm typed — to sketch time you might get back.</p>
-      </div>
-      <div class="roi">
-        <div>
-          <label>Hours spent typing per day · <strong id="roi-hours-val">2.0</strong></label>
-          <input id="roi-hours" type="range" min="0.5" max="8" step="0.5" value="2" />
-          <label style="margin-top:18px">Your hour is worth · $<strong id="roi-rate-val">80</strong></label>
-          <input id="roi-rate" type="range" min="20" max="250" step="5" value="80" />
-        </div>
-        <div>
-          <p class="roi-stat" id="roi-hours-saved">33 hrs<small>sketched time back / month</small></p>
-          <p class="roi-stat" id="roi-money" style="margin-top:16px">$30,000<small>after annual Pro, if that time is real</small></p>
-          <p class="fine" style="margin-top:12px">Pro annual is $144. Treat the rest as a napkin, not a promise.</p>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      Pricing — Cadence
+    </title>
+    <meta name="description" content="Cadence is free to start. Pro is $12 a month billed annually.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="nav" id="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html" aria-label="Cadence home">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            </path>
+          </svg>
+          Cadence
+        </a>
+        <nav class="nav-links">
+          <a href="index.html">
+            Home
+          </a>
+          <a href="pricing.html">
+            Pricing
+          </a>
+          <a href="demo.html">
+            Demo
+          </a>
+        </nav>
+        <div class="nav-cta">
+          <a class="btn btn-ink btn-sm" href="app.html">
+            Talk
+          </a>
+          <button class="nav-toggle" type="button" aria-label="Menu">
+            <span>
+            </span>
+          </button>
         </div>
       </div>
-    </div>
-  </section>
-  <section id="faq">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">FAQ</p>
-        <h2>You might be wondering.</h2>
+    </header>
+    <main>
+      <section class="price-hero">
+        <div class="wrap">
+          <div class="bill-toggle" role="tablist">
+            <button type="button" data-bill="monthly">
+              Monthly
+            </button>
+            <button type="button" class="is-on" data-bill="annual">
+              Annual
+            </button>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="wrap">
+          <div class="price-grid">
+            <article class="price-card is-featured">
+              <p class="who">
+                For individuals and teams
+              </p>
+              <h2>
+                Pro
+              </h2>
+              <p class="amt" id="pro-amt">
+                $12
+                <small>
+                  /user/mo
+                </small>
+              </p>
+              <p class="fine" id="pro-note">
+                Billed $144/year · 20% off
+              </p>
+              <ul>
+                <li>
+                  Everything in Free
+                </li>
+                <li>
+                  Unlimited dictation
+                </li>
+                <li>
+                  More meetings, kept longer
+                </li>
+                <li>
+                  Advanced models and early features
+                </li>
+                <li>
+                  Priority support
+                </li>
+                <li>
+                  Centralized billing and seats — no minimum
+                </li>
+                <li>
+                  Shared dictionary and snippets
+                </li>
+                <li>
+                  14-day Pro trial from Free
+                </li>
+              </ul>
+              <a class="btn btn-ink" href="checkout.html">
+                Continue to checkout
+              </a>
+            </article>
+            <article class="price-card">
+              <p class="who">
+                For individuals
+              </p>
+              <h2>
+                Free
+              </h2>
+              <p class="amt">
+                $0
+                <small>
+                  /mo
+                </small>
+              </p>
+              <p class="fine">
+                No card. Ever, on this plan.
+              </p>
+              <p class="fine" data-billing-remaining="">
+                Forever trial. The app never locks.
+              </p>
+              <ul>
+                <li>
+                  Dictation in 100+ languages, every app
+                </li>
+                <li>
+                  Unlimited dictation — never locks
+                </li>
+                <li>
+                  A reminder after 14 days, like shareware
+                </li>
+                <li>
+                  Close it and keep talking
+                </li>
+                <li>
+                  Notetaker for meetings and voice memos (Mac)
+                </li>
+                <li>
+                  Speaker labels and questions on your notes
+                </li>
+                <li>
+                  Learns names and jargon
+                </li>
+                <li>
+                  Privacy Mode, any time
+                </li>
+              </ul>
+              <a class="btn btn-ghost" href="app.html">
+                Start free
+              </a>
+            </article>
+            <article class="price-card">
+              <p class="who">
+                For security-minded teams
+              </p>
+              <h2>
+                Enterprise
+              </h2>
+              <p class="amt">
+                Contact us
+              </p>
+              <p class="fine">
+                Volume pricing, written by sales.
+              </p>
+              <ul>
+                <li>
+                  Everything in Pro
+                </li>
+                <li>
+                  SSO / SAML and SCIM
+                </li>
+                <li>
+                  Audit logs, MDM, domain controls
+                </li>
+                <li>
+                  Enforced Privacy Mode
+                </li>
+                <li>
+                  DPA and BAA paperwork on request
+                </li>
+                <li>
+                  Dedicated support and admin seats
+                </li>
+                <li>
+                  Advanced usage analytics
+                </li>
+                <li>
+                  MSA and DPA
+                </li>
+              </ul>
+              <a class="btn btn-ghost" href="mailto:hello@cadence.example">
+                Talk to sales
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="wrap footer-grid">
+        <div>
+          <a class="brand" href="index.html">
+            <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+              <path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              </path>
+            </svg>
+            Cadence
+          </a>
+        </div>
+        <nav>
+          <a href="app.html">
+            App
+          </a>
+          <a href="privacy.html">
+            Privacy
+          </a>
+          <a href="terms.html">
+            Terms
+          </a>
+        </nav>
       </div>
-      <div class="faq-list">
-        <article class="faq-item is-open">
-          <button type="button">How do I move from Free to Pro? <span>+</span></button>
-          <div class="ans">Open checkout from this page or from the weekly-cap paywall in the app. Pick monthly ($15) or annual ($144). You can also start a 14-day Pro trial from the paywall. No lock-in; cancel from Plan &amp; billing.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Is Cadence free? <span>+</span></button>
-          <div class="ans">Yes. Free includes dictation and Mac Notetaker with weekly word and meeting caps. No card. Pro is the unlimited lane. Enterprise is the security lane.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Does Free include Notetaker? <span>+</span></button>
-          <div class="ans">Yes, on Mac: speaker labels, questions across notes, and a weekly meeting cap. Short clips under five minutes do not count. Pro keeps more meetings, longer.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Can I change or cancel anytime? <span>+</span></button>
-          <div class="ans">Yes. Plan &amp; billing lives in the desktop app. Support will also do it if the UI is being stubborn.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Student or nonprofit pricing? <span>+</span></button>
-          <div class="ans">Students and educators with a school address get 50% off Pro. Nonprofits can write in for a similar conversation.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">What happens when I hit the weekly cap? <span>+</span></button>
-          <div class="ans">Dictation pauses when a take would go over. We do not add that line. Start a 14-day Pro trial, go to checkout, or wait until next Monday when the 2,000 words reset. Native Android dictation stays unlimited on Free.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Which platforms is Notetaker on? <span>+</span></button>
-          <div class="ans">Mac today. Windows next. Phones later. Dictation is already on Mac, Windows, iPhone, and Android on every plan.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Does Notetaker send a bot to the call? <span>+</span></button>
-          <div class="ans">No. It listens on your Mac. Nobody has to admit a stranger named Cadence Notetaker. It also works for a conversation in the room.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">I already pay for Pro. Do I get Notetaker? <span>+</span></button>
-          <div class="ans">Yes, at no extra cost, with higher meeting limits. The rollout is gradual — if you do not see it yet, you will.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Can the whole team sit on Pro? <span>+</span></button>
-          <div class="ans">Yes. No seat minimum, invite first, pay when you are ready, shared dictionary, basic admin dashboards. For SSO, enforced privacy, and volume pricing, that is Enterprise.</div>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section class="cta-band">
-    <div class="wrap">
-      <h2>Speak it.<br>Read it <em>back finished</em>.</h2>
-      <div class="cta-actions">
-        <a class="btn btn-ink btn-lg" href="app.html">Try Cadence free</a>
-        <a class="btn btn-ghost btn-lg" href="demo.html">Four scripted rooms</a>
-      </div>
-    </div>
-  </section>
-</main>
-<footer class="footer">
-  <div class="wrap footer-grid">
-    <div>
-      <a class="brand" href="index.html">
-        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-        Cadence
-      </a>
-      <p class="fine" style="margin-top:10px">Speak naturally. Send the written version.</p>
-    </div>
-    <nav>
-      <a href="index.html#product">Product</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="compare.html">Compare</a>
-      <a href="demo.html">Demo</a>
-      <a href="app.html">App</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="https://x.com" rel="noopener">X</a>
-      <a href="https://www.linkedin.com" rel="noopener">LinkedIn</a>
-    </nav>
-  </div>
-</footer>
-<script src="config.js"></script>
-<script src="billing.js"></script>
-<script src="site.js"></script>
-</body>
+    </footer>
+    <script src="config.js">
+    </script>
+    <script src="billing.js">
+    </script>
+    <script src="site.js">
+    </script>
+  </body>
 </html>
