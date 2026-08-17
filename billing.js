@@ -57,23 +57,14 @@
     const raw = read(KEYS.until, "");
     if (!raw) return null;
     const end = Date.parse(raw);
-    if (!Number.isFinite(end)) {
-      write(KEYS.until, null);
-      return null;
-    }
-    if (Date.now() > end) {
-      write(KEYS.until, null);
-      return null;
-    }
+    if (!Number.isFinite(end)) return null;
+    if (Date.now() > end) return null;
     return raw;
   };
 
   const isPro = () => read(KEYS.plan, "free") === "pro" || Boolean(trialUntil());
-
-  const remaining = () => {
-    if (isPro()) return Infinity;
-    return Math.max(0, FREE_WEEKLY_LIMIT - used());
-  };
+  const remaining = () => Infinity;
+  const canDictate = () => true;
 
   const snapshot = () => {
     const until = trialUntil();
@@ -97,10 +88,6 @@
   const addWords = (n) => {
     const count = Math.max(0, Math.floor(Number(n) || 0));
     if (!count) return used();
-    if (isPro()) {
-      emit();
-      return used();
-    }
     ensureWeek();
     const next = used() + count;
     write(KEYS.words, String(next));
@@ -137,28 +124,23 @@
   };
 
   const formatChip = () => {
-    if (isPro()) {
-      const paid = read(KEYS.plan, "free") === "pro";
-      return paid ? "Pro · unlimited" : "Pro trial · unlimited";
+    if (read(KEYS.plan, "free") === "pro") return "Pro · unlimited";
+    const raw = read(KEYS.until, "");
+    const end = Date.parse(raw || "");
+    if (Number.isFinite(end) && Date.now() > end) return "Trial expired · still works";
+    if (Number.isFinite(end)) {
+      const days = Math.max(0, Math.ceil((end - Date.now()) / 86400000));
+      return days === 1 ? "Trial · 1 day left" : "Trial · " + days + " days left";
     }
-    const u = used();
-    return `${u.toLocaleString()} / ${FREE_WEEKLY_LIMIT.toLocaleString()} words this week`;
+    return "Trial · unlimited";
   };
 
   const paintRemaining = () => {
     const nodes = document.querySelectorAll("[data-billing-remaining]");
     if (!nodes.length) return;
-    const snap = snapshot();
-    let text;
-    if (snap.isPro) {
-      text = snap.plan === "pro"
-        ? "You're on Pro — unlimited words."
-        : "Pro trial is on — unlimited words.";
-    } else if (snap.remaining === FREE_WEEKLY_LIMIT) {
-      text = `${FREE_WEEKLY_LIMIT.toLocaleString()} words left this week on Free.`;
-    } else {
-      text = `${snap.remaining.toLocaleString()} of ${FREE_WEEKLY_LIMIT.toLocaleString()} words left this week.`;
-    }
+    const text = read(KEYS.plan, "free") === "pro"
+      ? "You're on Pro — no reminders."
+      : "Forever trial. The app never locks. Pro removes the reminder.";
     nodes.forEach((el) => { el.textContent = text; });
   };
 
@@ -193,30 +175,22 @@
       note.textContent = text;
       note.classList.toggle("ok", Boolean(ok));
     };
-
-    try {
-      if (sessionStorage.getItem("cadence_just_unlocked") === "paid") {
-        sessionStorage.removeItem("cadence_just_unlocked");
-        showNote("You're on Pro. Unlimited dictation is on in this browser.", true);
-      }
-    } catch { /* */ }
-
     root.querySelectorAll("[data-checkout-pay]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const plan = btn.getAttribute("data-checkout-pay");
         const url = paymentLink(plan);
-        if (url) {
-          window.location.href = url;
-          return;
-        }
-        startTrial();
-        showNote("Payment isn't connected yet — your trial is on so you can keep working.", true);
+        if (url) { window.location.href = url; return; }
+        activatePro();
+        showNote("Payment isn't connected yet — Pro is on in this browser so the reminder stays off.", true);
         window.setTimeout(() => { window.location.href = "app.html?pro=1"; }, 1200);
       });
     });
   };
 
   if (!read(KEYS.plan, "")) write(KEYS.plan, "free");
+  if (!read(KEYS.until, "") && read(KEYS.plan, "free") !== "pro") {
+    write(KEYS.until, new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString());
+  }
   ensureWeek();
   consumeUrlFlags();
 
@@ -228,6 +202,10 @@
     remaining,
     used,
     isPro,
+    canDictate,
+    isExpired: () => false,
+    isNagDue: () => false,
+    snoozeNag: () => {},
     startTrial,
     activatePro,
     reset,
