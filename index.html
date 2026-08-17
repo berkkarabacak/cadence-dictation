@@ -1,370 +1,156 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cadence — Speak naturally, send polished writing</title>
-  <meta name="description" content="Cadence turns natural speech into clear writing in every app on Mac, Windows, iPhone, and Android." />
-  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-<div class="promo">Cadence Notetaker is on Mac — meetings and voice memos, no bot in the call. <a href="pricing.html">See plans</a></div>
-<header class="nav" id="nav">
-  <div class="nav-inner">
-    <a class="brand" href="index.html" aria-label="Cadence home">
-      <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-      Cadence
-    </a>
-    <nav class="nav-links">
-      <a href="index.html#product">Product</a>
-      <a href="compare.html">Compare</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="demo.html">Demo</a>
-    </nav>
-    <div class="nav-cta">
-      <a class="btn btn-ghost btn-sm" href="app.html">Open the app</a>
-      <a class="btn btn-ink btn-sm" href="app.html">Try free</a>
-      <button class="nav-toggle" type="button" aria-label="Menu"><span></span></button>
-    </div>
-  </div>
-</header>
-<main>
-  <section class="hero">
-    <div class="wrap">
-      <p class="kicker reveal">Voice to text, finished</p>
-      <h1 class="display reveal reveal-2">
-        <span class="line">Think out loud.</span>
-        <span class="line">Send it <em>finished</em>.</span>
-      </h1>
-      <p class="hero-sub reveal reveal-3">Cadence listens to how you actually talk — rambles, pauses, mid-course corrections — and types the version you meant to write. In every app, on every device.</p>
-      <div class="hero-meta">
-        <div class="platforms">
-          <span class="chip">Mac</span>
-          <span class="chip">Windows</span>
-          <span class="chip">iPhone</span>
-          <span class="chip">Android</span>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>
+      Cadence — Talk. It writes.
+    </title>
+    <meta name="description" content="Talk. Cadence writes the polished version. Free to start.">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,520&family=Outfit:wght@300;400;500;560;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body class="sell">
+    <header class="nav" id="nav">
+      <div class="nav-inner">
+        <a class="brand" href="index.html" aria-label="Cadence home">
+          <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            </path>
+          </svg>
+          Cadence
+        </a>
+        <div class="nav-cta">
+          <a class="btn btn-ink btn-sm" href="app.html">
+            Talk
+          </a>
         </div>
-        <span>Free to start · no card</span>
       </div>
-      <div class="hero-actions">
-        <a class="btn btn-ink btn-lg" href="app.html">Try Cadence free</a>
-        <a class="btn btn-ghost btn-lg" href="demo.html">Watch it clean a sentence</a>
-      </div>
-    </div>
-    <div class="wrap-wide">
-      <div class="stage" aria-live="polite">
-        <div class="stage-bar">
-          <span class="live-tag"><i class="live-dot"></i> Live demo</span>
-          <span>Spoken draft → sendable writing</span>
-        </div>
-        <div class="stage-grid">
-          <div class="stage-col">
-            <div class="stage-label">As spoken</div>
-            <div id="hero-raw" class="stage-text is-raw"></div>
+    </header>
+    <main>
+      <section class="hero sell-hero">
+        <div class="wrap sell-pitch">
+          <h1 class="display reveal">
+            Talk. It writes.
+          </h1>
+          <div class="hero-actions reveal reveal-2">
+            <a class="btn btn-ink btn-lg" href="app.html">
+              Hold to talk
+            </a>
           </div>
-          <div class="stage-col">
-            <div class="stage-label">As written</div>
-            <div id="hero-clean" class="stage-text is-clean"></div>
-          </div>
+          <p class="sell-fine reveal reveal-3">
+            Free · $12/mo to skip reminders
+          </p>
         </div>
-      </div>
-    </div>
-  </section>
-  <section class="logos">
-    <div class="wrap">
-      <p>Used by people at</p>
-      <div class="logo-row" aria-label="Company wordmarks">
-        <span class="wordmark">Northline</span>
-        <span class="wordmark">Helix</span>
-        <span class="wordmark">Meridian</span>
-        <span class="wordmark">Cove</span>
-        <span class="wordmark">Aster</span>
-        <span class="wordmark">Fieldwork</span>
-        <span class="wordmark">Lumen</span>
-        <span class="wordmark">Paperclip</span>
-      </div>
-    </div>
-  </section>
-  <section class="speed" id="product">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Speaking vs typing</p>
-        <h2>Most people talk much faster than they type.</h2>
-        <p>Typical typing sits around 45 words a minute. Conversational speech is closer to 220. Cadence is built so the written line can keep up with the spoken one.</p>
-      </div>
-      <div class="speed-grid">
-        <article class="speed-card">
-          <header>
-            <h3>Keyboard</h3>
-            <div class="wpm">45 <small>wpm</small></div>
-          </header>
-          <div id="kb-stream" class="speed-stream"></div>
-        </article>
-        <article class="speed-card is-voice">
-          <header>
-            <h3>Spoken</h3>
-            <div class="wpm">220 <small>wpm</small></div>
-          </header>
-          <div id="voice-stream" class="speed-stream"></div>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Cleanup</p>
-        <h2>It hears the mess. It keeps the meaning.</h2>
-        <p>Filler drops out. False starts collapse. Repeated words fold in. What remains is a sentence you would actually send.</p>
-      </div>
-      <div class="cleanup-card">
-        <div class="cleanup-inner">
-          <div class="cleanup-raw">
-            <div class="stage-label">Spoken</div>
-            <p id="cleanup-raw" class="stage-text is-raw"></p>
-            <div class="chips">
-              <span class="flag" id="chip-fill">Filler</span>
-              <span class="flag" id="chip-corr">Correction</span>
-              <span class="flag" id="chip-rep">Repetition</span>
+        <div class="wrap-wide sell-stage-wrap">
+          <div class="stage sell-stage" aria-live="polite">
+            <div class="stage-grid">
+              <div class="stage-col">
+                <div class="stage-label">
+                  Spoken
+                </div>
+                <div id="hero-raw" class="stage-text is-raw">
+                </div>
+              </div>
+              <div class="stage-col">
+                <div class="stage-label">
+                  Sent
+                </div>
+                <div id="hero-clean" class="stage-text is-clean">
+                </div>
+              </div>
             </div>
           </div>
-          <div class="cleanup-out">
-            <div class="stage-label">Written</div>
-            <p id="cleanup-out" class="stage-text is-clean">Cleaning up…</p>
-          </div>
         </div>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">How it works</p>
-        <h2>Speak the way you think, in the app you already have open.</h2>
-      </div>
-      <div class="pillars">
-        <article class="pillar">
-          <p class="kicker">01</p>
-          <h3>Speak naturally</h3>
-          <p>Ramble. Pause. Change your mind halfway through. Cadence follows the intent, not the first draft of the sentence.</p>
-          <div class="mini-demo" id="mini-speak"></div>
-        </article>
-        <article class="pillar">
-          <p class="kicker">02</p>
-          <h3>Edits as you speak</h3>
-          <p>Filler, punctuation, and structure get handled while you talk, so the page reads like writing — not a transcript.</p>
-          <div class="mini-demo" id="mini-edit"></div>
-        </article>
-        <article class="pillar">
-          <p class="kicker">03</p>
-          <h3>Works anywhere</h3>
-          <p>No plugins. If you can type there, Cadence can type there — mail, chat, notes, the terminal, the model window.</p>
-          <div class="mini-demo" id="mini-anywhere"></div>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Personalization</p>
-        <h2>Make it sound like you, in the room you’re in.</h2>
-        <p>Set a tone per context. Teach it names. Save the lines you say every week.</p>
-      </div>
-      <div class="tone-panel">
-        <p class="kicker">Tone</p>
-        <div class="tone-pills" role="tablist">
-          <button type="button" data-tone="formal">Formal</button>
-          <button type="button" class="is-on" data-tone="casual">Casual</button>
-          <button type="button" data-tone="very">Very casual</button>
+        <div class="platforms sell-platforms" aria-label="Platforms">
+          <span class="chip">
+            Mac
+          </span>
+          <span class="chip">
+            Win
+          </span>
+          <span class="chip">
+            iPhone
+          </span>
+          <span class="chip">
+            Android
+          </span>
         </div>
-        <p id="tone-sample" class="tone-sample">Hey, are you free for lunch tomorrow? Let's do 12 if that works for you.</p>
-      </div>
-      <div class="cards-3">
-        <article class="soft-card">
-          <p class="kicker">Vocabulary</p>
-          <h3>It learns the names you use</h3>
-          <p>Client names, product jargon, the weird spelling of your street. Add a word once, or let Cadence pick it up from how you talk.</p>
-        </article>
-        <article class="soft-card">
-          <p class="kicker">Snippets</p>
-          <h3>Voice shortcuts for the lines you repeat</h3>
-          <p>Say a short cue — office address, intro blurb, refund policy — and Cadence expands the full block.</p>
-        </article>
-        <article class="soft-card">
-          <p class="kicker">Languages</p>
-          <h3>A hundred languages, auto-detected</h3>
-          <p>Switch mid-day without opening a settings panel. For the sharpest pass, pin the language you’re speaking right now.</p>
-          <div class="lang-pills">
-            <span>English</span><span>Español</span><span>Français</span><span>Deutsch</span><span>日本語</span><span>+ 95</span>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="privacy-band">
-        <div class="wrap" style="width:min(1100px, calc(100% - 56px))">
-          <div class="section-head">
-            <p class="kicker" style="color:#9FCFC6">Privacy</p>
-            <h2>Built for private dictation.</h2>
-            <p>Your voice is a draft, not a product. We do not sell voice data. Privacy Mode keeps dictation off training sets. You can turn that on any time.</p>
-          </div>
-          <div class="privacy-grid">
-            <article>
-              <h3>Not for sale</h3>
-              <p>Dictation is not a data business on the side. We do not sell voice recordings or transcripts.</p>
-            </article>
-            <article>
-              <h3>Privacy Mode</h3>
-              <p>A one-switch opt-out so spoken audio is not used to improve models. Teams can require it.</p>
-            </article>
-            <article>
-              <h3>On-device Notetaker</h3>
-              <p>Meeting notes on Mac stay on the machine. No bot joins the call. Nothing for anyone else to admit.</p>
-            </article>
-          </div>
+      </section>
+      <section class="sell-steps">
+        <div class="wrap sell-tiles">
+          <article class="sell-tile">
+            <span class="sell-ico" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none">
+                <circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="1.8">
+                </circle>
+                <circle cx="16" cy="16" r="4" fill="currentColor">
+                </circle>
+              </svg>
+            </span>
+            <h2>
+              Hold
+            </h2>
+          </article>
+          <article class="sell-tile">
+            <span class="sell-ico" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none">
+                <path d="M8 16v4M12 11v14M16 8v20M20 13v10M24 16v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+                </path>
+              </svg>
+            </span>
+            <h2>
+              Speak
+            </h2>
+          </article>
+          <article class="sell-tile">
+            <span class="sell-ico" aria-hidden="true">
+              <svg viewBox="0 0 32 32" fill="none">
+                <path d="M6 16h18M17 9l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                </path>
+              </svg>
+            </span>
+            <h2>
+              Send
+            </h2>
+          </article>
         </div>
+      </section>
+      <section class="sell-price">
+        <div class="wrap">
+          <p class="sell-dollar">
+            $12
+          </p>
+          <a class="btn btn-ink btn-lg" href="checkout.html">
+            Get Pro
+          </a>
+          <p class="sell-or">
+            <a href="app.html">
+              or just talk free
+            </a>
+          </p>
+        </div>
+      </section>
+    </main>
+    <footer class="footer sell-footer">
+      <div class="wrap">
+        <nav>
+          <a href="index.html">
+            Cadence
+          </a>
+          <a href="app.html">
+            App
+          </a>
+          <a href="privacy.html">
+            Privacy
+          </a>
+        </nav>
       </div>
-    </div>
-  </section>
-  <section>
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">Early notes</p>
-        <h2>From people who stopped fighting the keyboard.</h2>
-      </div>
-      <div class="quotes">
-        <article class="quote">
-          <blockquote>I talk the email into existence while I walk to the kettle. By the time I sit down, it’s already a paragraph I would send.</blockquote>
-          <footer><strong>Nia Okoye</strong> Design lead, independent studio</footer>
-        </article>
-        <article class="quote">
-          <blockquote>Built-in dictation used to dump a pile of ums on my screen. Cadence hands me the sentence I meant, including the part where I changed my mind.</blockquote>
-          <footer><strong>Marcus Ellison</strong> Staff engineer, payments</footer>
-        </article>
-        <article class="quote">
-          <blockquote>I write in three languages in a day. It keeps up, and it finally spells our customers’ names the way they spell them.</blockquote>
-          <footer><strong>Sofia Bergström</strong> Founder, Atlas North</footer>
-        </article>
-        <article class="quote">
-          <blockquote>The gap between the thought and the Slack message used to be a small grief. That gap is mostly gone.</blockquote>
-          <footer><strong>Priya Raman</strong> Product, Series B fintech</footer>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section id="faq">
-    <div class="wrap">
-      <div class="section-head">
-        <p class="kicker">FAQ</p>
-        <h2>Good questions.</h2>
-      </div>
-      <div class="faq-list">
-        <article class="faq-item is-open">
-          <button type="button">Will it work in mail, notes, chat, and model windows? <span>+</span></button>
-          <div class="ans">Yes. Cadence types wherever the caret is. No integration hunt. If the field accepts a keyboard, it accepts Cadence — Gmail, Slack, iMessage, Notion, the terminal, your editor, Claude, ChatGPT, Cursor.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">How is this different from Siri or Google voice typing? <span>+</span></button>
-          <div class="ans">Those tools tend to write what you said, word for word, including the false start. Cadence aims for what you meant: it keeps the last correction, punctuates, and formats. One tool, same behavior, in every app — not locked to a single OS or a single company’s suite. See the side-by-side on Compare.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Does it work in other languages? <span>+</span></button>
-          <div class="ans">Yes — more than a hundred, with auto-detect. If you bounce between languages, pin the one you’re speaking for a cleaner pass; the picker lives in the Cadence bar.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">What if I have an accent? <span>+</span></button>
-          <div class="ans">Cadence is trained across a wide range of accents and pacing. A practical tip: select only the language you’re speaking in that moment. Dual-language mode can guess the wrong one if your English carries another language’s rhythm.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">I talk fast, quietly, or in a noisy room. <span>+</span></button>
-          <div class="ans">A built-in mic is enough. Closer to the mouth is better if you whisper or the café is loud. Bluetooth earbuds often compress the start of a phrase — we suggest skipping them for dictation.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Do I need a special microphone? <span>+</span></button>
-          <div class="ans">No. The one in your laptop or phone is the default. A nearer mic helps in loud rooms; extra hardware is optional, not required.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Is my voice private? <span>+</span></button>
-          <div class="ans">We do not sell voice data. Privacy Mode keeps dictation out of training. Notetaker on Mac runs on the device and does not send a bot into the meeting. Read the full note on the Privacy page.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Is Cadence free? <span>+</span></button>
-          <div class="ans">Yes. Free includes dictation and Mac Notetaker, with 2,000 words a week on desktop, 1,000 on iPhone, and unlimited on Android. No card. Pro is unlimited dictation if you outgrow the week.</div>
-        </article>
-        <article class="faq-item">
-          <button type="button">Can a whole team use it? <span>+</span></button>
-          <div class="ans">Pro covers individuals and teams — no seat minimum, centralized billing, shared dictionary and snippets. Enterprise adds SSO, audit logs, enforced Privacy Mode, and a BAA conversation if you need one.</div>
-        </article>
-      </div>
-    </div>
-  </section>
-  <section class="cta-band" id="download">
-    <div class="wrap">
-      <p class="kicker">Get Cadence</p>
-      <h2>Open a cursor.<br><em>Say the sentence.</em></h2>
-      <p class="lede" style="margin:0 auto">Available on Mac, Windows, iPhone, and Android. Free to start — Pro for 14 days if you want the unlimited lane.</p>
-      <div class="cta-actions">
-        <a class="btn btn-ink btn-lg" href="app.html">Try it in the browser</a>
-        <a class="btn btn-ghost btn-lg" href="pricing.html">Compare plans</a>
-      </div>
-      <div class="dl-grid" style="margin-top:40px;text-align:left">
-        <article class="dl-card">
-          <p class="kicker">Desktop</p>
-          <h3>Mac</h3>
-          <p>Dictation plus Notetaker. No meeting bot.</p>
-          <a class="btn btn-ink btn-sm" href="app.html">Open demo</a>
-        </article>
-        <article class="dl-card">
-          <p class="kicker">Desktop</p>
-          <h3>Windows</h3>
-          <p>System-wide dictation in every window.</p>
-          <a class="btn btn-ink btn-sm" href="app.html">Open demo</a>
-        </article>
-        <article class="dl-card">
-          <p class="kicker">Mobile</p>
-          <h3>iPhone</h3>
-          <p>Hold, speak, paste the clean line.</p>
-          <a class="btn btn-ink btn-sm" href="app.html">Open demo</a>
-        </article>
-        <article class="dl-card">
-          <p class="kicker">Mobile</p>
-          <h3>Android</h3>
-          <p>Unlimited words on the free plan.</p>
-          <a class="btn btn-ink btn-sm" href="app.html">Open demo</a>
-        </article>
-      </div>
-    </div>
-  </section>
-</main>
-<footer class="footer">
-  <div class="wrap footer-grid">
-    <div>
-      <a class="brand" href="index.html">
-        <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>
-        Cadence
-      </a>
-      <p class="fine" style="margin-top:10px">Speak naturally. Send the written version.</p>
-    </div>
-    <nav>
-      <a href="index.html#product">Product</a>
-      <a href="pricing.html">Pricing</a>
-      <a href="compare.html">Compare</a>
-      <a href="demo.html">Demo</a>
-      <a href="app.html">App</a>
-      <a href="privacy.html">Privacy</a>
-      <a href="terms.html">Terms</a>
-      <a href="https://x.com" rel="noopener">X</a>
-      <a href="https://www.linkedin.com" rel="noopener">LinkedIn</a>
-    </nav>
-  </div>
-</footer>
-<script src="site.js"></script>
-</body>
+    </footer>
+    <script src="site.js">
+    </script>
+  </body>
 </html>
