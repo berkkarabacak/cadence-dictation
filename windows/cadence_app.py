@@ -15,9 +15,9 @@ import tkinter as tk
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
-HOTKEY = {keyboard.Key.ctrl_l, keyboard.Key.cmd}
 
 user32 = ctypes.windll.user32
+kernel32 = ctypes.windll.kernel32
 
 
 class KEYBDINPUT(ctypes.Structure):
@@ -57,20 +57,45 @@ class INPUT(ctypes.Structure):
     _fields_ = (("type", wintypes.DWORD), ("_input", _INPUT))
 
 
-KEYEVENTF_UNICODE = 0x0004
-KEYEVENTF_KEYUP = 0x0002
 INPUT_KEYBOARD = 1
+KEYEVENTF_KEYUP = 0x0002
+VK_CONTROL = 0x11
+VK_V = 0x56
+CF_UNICODETEXT = 13
+GMEM_MOVEABLE = 0x0002
+
+
+def copy_to_clipboard(text: str) -> None:
+    user32.OpenClipboard(0)
+    user32.EmptyClipboard()
+    data = text.encode("utf-16-le") + b"\x00\x00"
+    handle = kernel32.GlobalAlloc(GMEM_MOVEABLE, len(data))
+    locked = kernel32.GlobalLock(handle)
+    ctypes.memmove(locked, data, len(data))
+    kernel32.GlobalUnlock(handle)
+    user32.SetClipboardData(CF_UNICODETEXT, handle)
+    user32.CloseClipboard()
+
+
+def paste_keys() -> None:
+    extras = ctypes.c_ulong(0)
+
+    def key(vk, flags=0):
+        ev = INPUT(type=INPUT_KEYBOARD)
+        ev.ki = KEYBDINPUT(vk, 0, flags, 0, ctypes.pointer(extras))
+        user32.SendInput(1, ctypes.byref(ev), ctypes.sizeof(INPUT))
+
+    key(VK_CONTROL)
+    key(VK_V)
+    key(VK_V, KEYEVENTF_KEYUP)
+    key(VK_CONTROL, KEYEVENTF_KEYUP)
 
 
 def insert_text(text: str) -> None:
-    extras = ctypes.c_ulong(0)
-    for ch in text:
-        down = INPUT(type=INPUT_KEYBOARD)
-        down.ki = KEYBDINPUT(0, ord(ch), KEYEVENTF_UNICODE, 0, ctypes.pointer(extras))
-        up = INPUT(type=INPUT_KEYBOARD)
-        up.ki = KEYBDINPUT(0, ord(ch), KEYEVENTF_UNICODE | KEYEVENTF_KEYUP, 0, ctypes.pointer(extras))
-        user32.SendInput(1, ctypes.byref(down), ctypes.sizeof(INPUT))
-        user32.SendInput(1, ctypes.byref(up), ctypes.sizeof(INPUT))
+    if not text:
+        return
+    copy_to_clipboard(text if text.endswith(" ") else text + " ")
+    paste_keys()
 
 
 def clean_text(raw: str) -> str:
@@ -84,55 +109,69 @@ def clean_text(raw: str) -> str:
         if idx >= 0:
             after = text[idx + len(cue) :].strip(" ,.")
             if after:
-                text = after[0].upper() + after[1:] if after else after
+                text = after[0].upper() + after[1:]
     if text and text[0].islower():
         text = text[0].upper() + text[1:]
     return text
 
 
 def transcribe_wav(path: str) -> str:
+    safe = path.replace("'", "''")
     script = (
         "Add-Type -AssemblyName System.Speech;"
         "$e = New-Object System.Speech.Recognition.SpeechRecognitionEngine;"
-        f"$e.SetInputToWaveFile('{path}');"
+        f"$e.SetInputToWaveFile('{safe}');"
         "$e.LoadGrammar((New-Object System.Speech.Recognition.DictationGrammar));"
+        "$e.InitialSilenceTimeout = [TimeSpan]::FromSeconds(2);"
         "$r = $e.Recognize();"
         "if ($r) { $r.Text }"
     )
+    flags = subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0
     try:
         out = subprocess.run(
             ["powershell", "-NoProfile", "-Command", script],
             capture_output=True,
             text=True,
-            timeout=45,
-            creationflags=subprocess.CREATE_NO_WINDOW if sys.platform == "win32" else 0,
+            timeout=60,
+            creationflags=flags,
         )
         return (out.stdout or "").strip()
     except Exception:
         return ""
 
 
+def is_ctrl(key) -> bool:
+    return key in (keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r)
+
+
+def is_shift(key) -> bool:
+    return key in (keyboard.Key.shift, keyboard.Key.shift_l, keyboard.Key.shift_r)
+
+
 class CadenceApp:
     def __init__(self) -> None:
         self.recording = False
-        self.frames: list[np.ndarray] = []
+        self.frames: list = []
         self.stream = None
         self.target_hwnd = None
-        self.pressed = set()
+        self.ctrl = False
+        self.shift = False
         self.root = tk.Tk()
         self.root.title("Cadence")
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
         self.root.configure(bg="#0f3d3a")
-        self.root.geometry("280x44+40+40")
+        self.root.geometry("320x48+40+40")
         self.label = tk.Label(
             self.root,
-            text="Hold Ctrl+Win · Cadence",
+            text="Hold Ctrl+Shift, or hold this bar",
             fg="#f4efe4",
             bg="#0f3d3a",
             font=("Segoe UI", 11),
         )
-        self.label.pack(expand=True, fill="both", padx=14, pady=8)
+        self.label.pack(expand=True, fill="both", padx=14, pady=10)
+        self.label.bind("<ButtonPress-1>", lambda _e: self.start_rec())
+        self.label.bind("<ButtonRelease-1>", lambda _e: self.stop_rec())
         self.root.bind("<Escape>", lambda _e: self.quit())
 
     def set_status(self, text: str) -> None:
@@ -149,21 +188,28 @@ class CadenceApp:
         self.frames = []
         self.recording = True
         self.set_status("Listening…")
-        self.stream = sd.InputStream(
-            samplerate=SAMPLE_RATE,
-            channels=CHANNELS,
-            dtype="int16",
-            callback=self.audio_cb,
-        )
-        self.stream.start()
+        try:
+            self.stream = sd.InputStream(
+                samplerate=SAMPLE_RATE,
+                channels=CHANNELS,
+                dtype="int16",
+                callback=self.audio_cb,
+            )
+            self.stream.start()
+        except Exception:
+            self.recording = False
+            self.set_status("Mic failed · check Windows permission")
 
     def stop_rec(self) -> None:
         if not self.recording:
             return
         self.recording = False
         if self.stream:
-            self.stream.stop()
-            self.stream.close()
+            try:
+                self.stream.stop()
+                self.stream.close()
+            except Exception:
+                pass
             self.stream = None
         self.set_status("Writing…")
         threading.Thread(target=self.finish, daemon=True).start()
@@ -186,25 +232,47 @@ class CadenceApp:
                 pass
         if text and self.target_hwnd:
             user32.SetForegroundWindow(self.target_hwnd)
-            insert_text(text if text.endswith(" ") else text + " ")
-        self.set_status("Hold Ctrl+Win · Cadence")
+            insert_text(text)
+            self.set_status("Hold Ctrl+Shift, or hold this bar")
+        elif text:
+            self.set_status(text[:40])
+        else:
+            self.set_status("Heard nothing · try again")
+            self.root.after(2500, lambda: self.set_status("Hold Ctrl+Shift, or hold this bar"))
 
     def on_press(self, key) -> None:
         if key == keyboard.Key.esc:
             self.quit()
             return
-        self.pressed.add(key)
-        if HOTKEY.issubset(self.pressed):
+        if is_ctrl(key):
+            self.ctrl = True
+        if is_shift(key):
+            self.shift = True
+        if self.ctrl and self.shift:
             self.start_rec()
 
     def on_release(self, key) -> None:
-        self.pressed.discard(key)
-        if self.recording and not HOTKEY.issubset(self.pressed):
-            self.stop_rec()
+        if is_ctrl(key):
+            self.ctrl = False
+        if is_shift(key):
+            self.shift = False
+        if self.recording and not (self.ctrl and self.shift):
+            if key in (
+                keyboard.Key.ctrl,
+                keyboard.Key.ctrl_l,
+                keyboard.Key.ctrl_r,
+                keyboard.Key.shift,
+                keyboard.Key.shift_l,
+                keyboard.Key.shift_r,
+            ):
+                self.stop_rec()
 
     def quit(self) -> None:
         self.recording = False
-        self.root.destroy()
+        try:
+            self.root.destroy()
+        except Exception:
+            pass
         os._exit(0)
 
     def run(self) -> None:
