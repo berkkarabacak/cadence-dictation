@@ -635,3 +635,132 @@ body.app-body .paywall .btn-ghost {
 @media (max-width: 920px) {
   .checkout-grid { grid-template-columns: 1fr; }
 }
+
+/* 10-second sell */
+body.sell .promo { display: none; }
+body.sell .nav-links,
+body.sell .nav-toggle { display: none; }
+
+body.sell .sell-hero {
+  min-height: calc(100svh - var(--nav-h));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 22px;
+  padding: 28px 0 36px;
+  text-align: center;
+}
+body.sell .sell-pitch { width: min(920px, calc(100% - 40px)); }
+body.sell .sell-hero h1 {
+  font-size: clamp(3.8rem, 11vw, 7.6rem);
+  max-width: none;
+  letter-spacing: -0.045em;
+  line-height: 0.92;
+}
+body.sell .sell-hero .hero-actions { margin-top: 22px; justify-content: center; }
+body.sell .sell-fine {
+  margin-top: 12px;
+  font-size: 13.5px;
+  color: var(--muted);
+  letter-spacing: 0.01em;
+}
+
+body.sell .sell-stage-wrap {
+  width: min(1180px, calc(100% - 32px));
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+body.sell .sell-stage {
+  margin: 4px auto 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  min-height: clamp(280px, 48vh, 560px);
+  border-radius: 36px;
+  box-shadow: 0 28px 70px rgba(27, 25, 22, 0.1);
+}
+body.sell .sell-stage .stage-bar { display: none; }
+body.sell .sell-stage .stage-grid {
+  flex: 1;
+  min-height: clamp(260px, 46vh, 540px);
+  grid-template-columns: 1fr 1fr;
+}
+body.sell .sell-stage .stage-col {
+  padding: 28px 32px 36px;
+  display: flex;
+  flex-direction: column;
+}
+body.sell .sell-stage .stage-label { font-size: 11px; letter-spacing: 0.16em; }
+body.sell .sell-stage .stage-text {
+  flex: 1;
+  font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+  min-height: 0;
+  line-height: 1.55;
+}
+body.sell .sell-stage .stage-text.is-clean {
+  font-size: clamp(1.2rem, 2vw, 1.55rem);
+  line-height: 1.45;
+}
+body.sell .sell-platforms { justify-content: center; gap: 8px; padding-bottom: 4px; }
+body.sell .sell-platforms .chip {
+  height: 28px; padding: 0 10px; font-size: 12px;
+  background: transparent; border: 1px solid var(--line-strong);
+}
+
+body.sell .sell-steps { padding: 56px 0 28px; }
+body.sell .sell-tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+body.sell .sell-tile {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+body.sell .sell-tile h2 {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 450;
+  letter-spacing: -0.03em;
+}
+body.sell .sell-ico { width: 44px; height: 44px; color: var(--accent); }
+body.sell .sell-ico svg { width: 44px; height: 44px; }
+body.sell .sell-price { text-align: center; padding: 48px 0 80px; }
+body.sell .sell-dollar {
+  font-family: var(--font-serif);
+  font-size: clamp(6.4rem, 18vw, 12rem);
+  letter-spacing: -0.06em;
+  line-height: 0.85;
+  margin-bottom: 22px;
+}
+body.sell .sell-or { margin-top: 16px; font-size: 15px; color: var(--muted); }
+body.sell .sell-or a { text-decoration: underline; text-underline-offset: 3px; }
+body.sell .sell-footer { padding: 28px 0 36px; text-align: center; }
+body.sell .sell-footer nav { justify-content: center; gap: 28px; }
+
+@media (max-width: 920px) {
+  body.sell .sell-hero { min-height: auto; padding-top: 20px; gap: 18px; }
+  body.sell .sell-stage { min-height: 0; }
+  body.sell .sell-stage .stage-grid { grid-template-columns: 1fr; min-height: 0; }
+  body.sell .sell-stage .stage-col + .stage-col { border-left: 0; border-top: 1px solid var(--line); }
+  body.sell .sell-stage .stage-text { min-height: 7.5em; }
+  body.sell .sell-tiles { grid-template-columns: 1fr; }
+  body.sell .sell-tile { min-height: 110px; flex-direction: row; justify-content: flex-start; padding: 0 22px; }
+}
+@media (max-width: 640px) {
+  body.sell .sell-hero h1 { font-size: 3.2rem; }
+  body.sell .sell-dollar { font-size: 5.4rem; }
+}
+
+.price-hero { padding: 28px 0 0; }
+.price-hero + section { padding-top: 12px; padding-bottom: 64px; }
+.price-card .fine { margin-top: 8px; }
