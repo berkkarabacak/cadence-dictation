@@ -3,10 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>
-      Cadence — Talk. It writes.
-    </title>
-    <meta name="description" content="Talk. Cadence writes the polished version. Free to start.">
+    <title>Cadence — Talk. It writes.</title>
+    <meta name="description" content="Talk. Cadence writes the polished version into the app you already have open. Free to start.">
     <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
@@ -18,66 +16,94 @@
       <div class="nav-inner">
         <a class="brand" href="index.html" aria-label="Cadence home">
           <svg class="brand-mark" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-            </path>
+            <path d="M6 16c2.4-4.8 4.8-4.8 7.2 0s4.8 4.8 7.2 0 4.8-4.8 7.2 0" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"></path>
           </svg>
           Cadence
         </a>
         <div class="nav-cta">
-          <a class="btn btn-ink btn-sm" href="app.html">
-            Talk
-          </a>
+          <button type="button" class="btn btn-ink btn-sm" id="nav-talk">Talk</button>
         </div>
       </div>
     </header>
     <main>
       <section class="hero sell-hero">
         <div class="wrap sell-pitch">
-          <h1 class="display reveal">
-            Talk. It writes.
-          </h1>
+          <h1 class="display reveal">Talk. It writes.</h1>
           <div class="hero-actions reveal reveal-2">
-            <a class="btn btn-ink btn-lg" href="app.html">
-              Hold to talk
-            </a>
+            <button class="btn btn-ink btn-lg" type="button" id="hold-talk">Hold to talk</button>
           </div>
-          <p class="sell-fine reveal reveal-3">
-            Free · $12/mo to skip reminders
-          </p>
+          <p class="sell-fine reveal reveal-3">Free · $12/mo to skip reminders</p>
+          <p id="talk-status" class="talk-status" hidden></p>
         </div>
         <div class="wrap-wide sell-stage-wrap">
-          <div class="stage sell-stage" aria-live="polite">
-            <div class="stage-grid">
-              <div class="stage-col">
-                <div class="stage-label">
-                  Spoken
-                </div>
-                <div id="hero-raw" class="stage-text is-raw">
-                </div>
+          <div class="win11" aria-live="polite">
+            <div class="win11-title">
+              <div class="win11-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
               </div>
-              <div class="stage-col">
-                <div class="stage-label">
-                  Sent
-                </div>
-                <div id="hero-clean" class="stage-text is-clean">
-                </div>
+              <div class="win11-name">Slack — #launch</div>
+              <div class="win11-caps" aria-hidden="true">
+                <span class="win11-min"></span>
+                <span class="win11-max"></span>
+                <span class="win11-x"></span>
               </div>
             </div>
+            <div class="win11-thread">
+              <article class="win11-msg">
+                <div class="win11-avatar">M</div>
+                <div>
+                  <div class="win11-who">Maya <time>2:14 PM</time></div>
+                  <p>Deck is in the drive. Can you send the note to #launch?</p>
+                </div>
+              </article>
+            </div>
+            <div class="win11-compose">
+              <div id="win-typed" class="win11-typed" data-placeholder="Message #launch"></div>
+            </div>
           </div>
+          <div class="cadence-pill" aria-hidden="true">
+            <span class="cadence-wave"><i></i><i></i><i></i><i></i><i></i></span>
+            <span>Hold Ctrl+Win · Cadence</span>
+          </div>
+          <p id="hero-raw" class="hero-spoken"></p>
         </div>
-        <div class="platforms sell-platforms" aria-label="Platforms">
-          <span class="chip">
-            Mac
-          </span>
-          <span class="chip">
-            Win
-          </span>
-          <span class="chip">
-            iPhone
-          </span>
-          <span class="chip">
-            Android
-          </span>
+        <p class="sell-line">Windows + Mac · types where you click</p>
+      </section>
+      <section class="sell-proof">
+        <div class="wrap">
+          <h2>Any app.</h2>
+          <div class="proof-grid">
+            <figure>
+              <div class="proof-shot">
+                <img src="cadence-windows-slack.png" alt="Windows chat">
+                <div class="proof-fake proof-chat" aria-hidden="true">
+                  <div class="pf-bar"><i></i><i></i><i></i><span>Slack — #launch</span></div>
+                  <div class="pf-body"><b>Maya</b><p>Deck is in the drive.</p><div class="pf-type">Hey — Friday's review is set.</div></div>
+                </div>
+              </div>
+              <figcaption>Windows · Chat</figcaption>
+            </figure>
+            <figure>
+              <div class="proof-shot">
+                <img src="cadence-windows-word.png" alt="Windows docs">
+                <div class="proof-fake proof-doc" aria-hidden="true">
+                  <div class="pf-bar pf-blue"><i></i><i></i><i></i><span>Launch note — Word</span></div>
+                  <div class="pf-page"><h3>Friday review</h3><p>Hey — just checking in about the deck.</p></div>
+                </div>
+              </div>
+              <figcaption>Windows · Docs</figcaption>
+            </figure>
+            <figure>
+              <div class="proof-shot">
+                <img src="cadence-mac-mail.png" alt="Mac mail">
+                <div class="proof-fake proof-mail" aria-hidden="true">
+                  <div class="pf-bar"><i></i><i></i><i></i><span>New Message</span></div>
+                  <div class="pf-mail"><em>To</em> maya@studio<br><em>Subject</em> Friday review<p>Hey — just checking in about the deck.</p></div>
+                </div>
+              </div>
+              <figcaption>Mac · Mail</figcaption>
+            </figure>
+          </div>
         </div>
       </section>
       <section class="sell-steps">
@@ -85,52 +111,36 @@
           <article class="sell-tile">
             <span class="sell-ico" aria-hidden="true">
               <svg viewBox="0 0 32 32" fill="none">
-                <circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="1.8">
-                </circle>
-                <circle cx="16" cy="16" r="4" fill="currentColor">
-                </circle>
+                <circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="1.8"></circle>
+                <circle cx="16" cy="16" r="4" fill="currentColor"></circle>
               </svg>
             </span>
-            <h2>
-              Hold
-            </h2>
+            <h2>Hold</h2>
           </article>
           <article class="sell-tile">
             <span class="sell-ico" aria-hidden="true">
               <svg viewBox="0 0 32 32" fill="none">
-                <path d="M8 16v4M12 11v14M16 8v20M20 13v10M24 16v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
-                </path>
+                <path d="M8 16v4M12 11v14M16 8v20M20 13v10M24 16v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
               </svg>
             </span>
-            <h2>
-              Speak
-            </h2>
+            <h2>Speak</h2>
           </article>
           <article class="sell-tile">
             <span class="sell-ico" aria-hidden="true">
               <svg viewBox="0 0 32 32" fill="none">
-                <path d="M6 16h18M17 9l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                </path>
+                <path d="M6 16h18M17 9l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
             </span>
-            <h2>
-              Send
-            </h2>
+            <h2>Send</h2>
           </article>
         </div>
       </section>
       <section class="sell-price">
         <div class="wrap">
-          <p class="sell-dollar">
-            $12
-          </p>
-          <a class="btn btn-ink btn-lg" href="checkout.html">
-            Get Pro
-          </a>
+          <p class="sell-dollar">$12</p>
+          <a class="btn btn-ink btn-lg" href="checkout.html">Get Pro</a>
           <p class="sell-or">
-            <a href="app.html">
-              or just talk free
-            </a>
+            <a href="#hold-talk" id="talk-free">or just talk free</a>
           </p>
         </div>
       </section>
@@ -138,19 +148,15 @@
     <footer class="footer sell-footer">
       <div class="wrap">
         <nav>
-          <a href="index.html">
-            Cadence
-          </a>
-          <a href="app.html">
-            App
-          </a>
-          <a href="privacy.html">
-            Privacy
-          </a>
+          <a href="index.html">Cadence</a>
+          <a href="app.html">App</a>
+          <a href="privacy.html">Privacy</a>
         </nav>
       </div>
     </footer>
-    <script src="site.js">
-    </script>
+    <script src="config.js"></script>
+    <script src="billing.js"></script>
+    <script src="site.js"></script>
+    <script src="home-talk.js"></script>
   </body>
 </html>
