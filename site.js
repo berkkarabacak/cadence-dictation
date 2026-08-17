@@ -2,12 +2,12 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  const nav = $(".nav");
+  const nav = $("#nav");
   if (nav) {
     const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    $(".nav-toggle")?.addEventListener("click", () => nav.classList.toggle("is-open"));
+    $("#nav-toggle")?.addEventListener("click", () => nav.classList.toggle("is-open"));
   }
 
   $$(".faq-item button").forEach((btn) => {
@@ -19,25 +19,39 @@
     });
   });
 
+  /* ---------- Hero live cleanup ---------- */
   const heroRaw = $("#hero-raw");
   const heroClean = $("#hero-clean");
-  if (heroRaw && heroClean) {
+  const winTyped = $("#win-typed");
+  const sellHold = document.body.classList.contains("sell") && $("#hold-talk");
+  const cleanTarget = heroClean || winTyped;
+  if (heroRaw && cleanTarget && (heroClean || sellHold || winTyped)) {
     const raw =
       "uh so hey just wanted to um check in about the the deck for Thursday wait no Friday's review I think Maya's gonna take the first half but I'm not totally sure and like can you also see if the notes from the kickoff got sent I mentioned it to her but she didn't confirm and now I'm kind of lost honestly";
     const clean =
       "Hey — just checking in about the deck for Friday's review. I think Maya will take the first half, but I'm not totally sure. Can you also see if the notes from the kickoff were sent? I mentioned it to her, but she didn't confirm, and now I'm a bit lost.";
 
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    const paused = () => !!window.CadenceHeroPause;
     const typeInto = async (el, text, ms, cls) => {
-      el.className = "stage-text " + cls;
+      if (!el || paused()) return;
+      if (el.classList && el.classList.contains("stage-text")) {
+        el.className = "stage-text " + cls;
+      }
       el.textContent = "";
       for (let i = 0; i < text.length; i++) {
+        if (paused()) return;
         el.textContent = text.slice(0, i + 1);
         if (i % 2 === 0) await sleep(ms);
       }
     };
 
     const highlightRaw = () => {
+      if (paused() || !heroRaw) return;
+      if (!heroRaw.classList.contains("stage-text")) {
+        heroRaw.textContent = raw;
+        return;
+      }
       const parts = [
         ["uh so hey just wanted to ", ""],
         ["um ", "hl-fill"],
@@ -49,26 +63,36 @@
         ["like ", "hl-fill"],
         ["can you also see if the notes from the kickoff got sent I mentioned it to her but she didn't confirm and now I'm kind of lost honestly", ""],
       ];
-      heroRaw.className = "stage-text is-raw";
+      if (heroRaw.classList && heroRaw.classList.contains("stage-text")) {
+        heroRaw.className = "stage-text is-raw";
+      }
       heroRaw.innerHTML = parts
         .map(([t, c]) => (c ? `<mark class="${c}">${t}</mark>` : t))
         .join("");
     };
 
     const loop = async () => {
-      while (true) {
-        heroClean.textContent = "";
+      while (!paused()) {
+        if (heroClean) heroClean.textContent = "";
+        if (winTyped) winTyped.textContent = "";
         await typeInto(heroRaw, raw, 12, "is-raw");
+        if (paused()) return;
         await sleep(500);
+        if (paused()) return;
         highlightRaw();
         await sleep(900);
-        await typeInto(heroClean, clean, 10, "is-clean");
+        if (paused()) return;
+        if (heroClean) await typeInto(heroClean, clean, 10, "is-clean");
+        if (paused()) return;
+        if (winTyped) await typeInto(winTyped, clean, 10, "is-clean");
+        if (paused()) return;
         await sleep(3200);
       }
     };
     loop();
   }
 
+  /* ---------- Speed streams ---------- */
   const streamText =
     "I'm getting started on the brief. Want me to open a fresh file, or pull in the one from last week? Give me a second — structure is up. Walk me through what you're building, or start from a template. I'll follow your lead.";
   const runStream = (el, wpm) => {
@@ -95,6 +119,7 @@
   runStream($("#kb-stream"), 45);
   runStream($("#voice-stream"), 220);
 
+  /* ---------- Cleanup chips demo ---------- */
   const rawEl = $("#cleanup-raw");
   const outEl = $("#cleanup-out");
   if (rawEl && outEl) {
@@ -125,6 +150,7 @@
     cycle();
   }
 
+  /* ---------- Pillar mini demos ---------- */
   const minis = [
     {
       el: "#mini-speak",
@@ -159,6 +185,7 @@
     }, 2800);
   });
 
+  /* ---------- Tone switcher ---------- */
   const tones = {
     formal:
       "Would you be available for lunch tomorrow? Twelve o'clock works well on my side if that suits you.",
@@ -174,6 +201,7 @@
     });
   });
 
+  /* ---------- Pricing billing toggle ---------- */
   const priceAmt = $("#pro-amt");
   const priceNote = $("#pro-note");
   $$("[data-bill]").forEach((btn) => {
@@ -188,6 +216,7 @@
     });
   });
 
+  /* ---------- ROI ---------- */
   const hours = $("#roi-hours");
   const rate = $("#roi-rate");
   const paintRoi = () => {
@@ -205,6 +234,7 @@
   rate?.addEventListener("input", paintRoi);
   paintRoi();
 
+  /* ---------- Demo rooms (scripted + optional live mic) ---------- */
   const rooms = {
     prompt: {
       raw: "um okay write me a uh python script that like reads a csv and wait no a json file and then um prints the top ten items by revenue actually make it a function I can import",
@@ -261,6 +291,7 @@
   };
 
   const holdBtn = $("#hold-talk");
+  const sellPage = document.body.classList.contains("sell");
   const startHold = (e) => {
     e?.preventDefault?.();
     if (holding) return;
@@ -272,16 +303,18 @@
     holding = false;
     holdBtn?.classList.remove("is-hot");
   };
-  holdBtn?.addEventListener("mousedown", startHold);
-  holdBtn?.addEventListener("touchstart", startHold, { passive: false });
-  window.addEventListener("mouseup", endHold);
-  window.addEventListener("touchend", endHold);
-  window.addEventListener("keydown", (e) => {
-    if (e.code === "ControlLeft" || e.code === "ControlRight") {
-      if (!e.repeat) startHold(e);
-    }
-  });
-  window.addEventListener("keyup", (e) => {
-    if (e.code === "ControlLeft" || e.code === "ControlRight") endHold();
-  });
+  if (!sellPage) {
+    holdBtn?.addEventListener("mousedown", startHold);
+    holdBtn?.addEventListener("touchstart", startHold, { passive: false });
+    window.addEventListener("mouseup", endHold);
+    window.addEventListener("touchend", endHold);
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "ControlLeft" || e.code === "ControlRight") {
+        if (!e.repeat) startHold(e);
+      }
+    });
+    window.addEventListener("keyup", (e) => {
+      if (e.code === "ControlLeft" || e.code === "ControlRight") endHold();
+    });
+  }
 })();
