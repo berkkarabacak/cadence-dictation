@@ -5,6 +5,7 @@ import tempfile
 import threading
 import wave
 import subprocess
+import time
 import ctypes
 from ctypes import wintypes
 
@@ -16,8 +17,8 @@ import tkinter as tk
 SAMPLE_RATE = 16000
 CHANNELS = 1
 
-user32 = ctypes.windll.user32
-kernel32 = ctypes.windll.kernel32
+user32 = ctypes.WinDLL("user32", use_last_error=True)
+kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
 
 
 class KEYBDINPUT(ctypes.Structure):
@@ -64,17 +65,50 @@ VK_V = 0x56
 CF_UNICODETEXT = 13
 GMEM_MOVEABLE = 0x0002
 
+user32.GetForegroundWindow.restype = wintypes.HWND
+user32.SetForegroundWindow.argtypes = [wintypes.HWND]
+user32.SetForegroundWindow.restype = wintypes.BOOL
+user32.OpenClipboard.argtypes = [wintypes.HWND]
+user32.OpenClipboard.restype = wintypes.BOOL
+user32.EmptyClipboard.restype = wintypes.BOOL
+user32.CloseClipboard.restype = wintypes.BOOL
+user32.SetClipboardData.argtypes = [wintypes.UINT, wintypes.HANDLE]
+user32.SetClipboardData.restype = wintypes.HANDLE
+user32.GetClipboardData.argtypes = [wintypes.UINT]
+user32.GetClipboardData.restype = wintypes.HANDLE
+user32.SendInput.argtypes = [wintypes.UINT, ctypes.POINTER(INPUT), ctypes.c_int]
+user32.SendInput.restype = wintypes.UINT
+kernel32.GlobalAlloc.argtypes = [wintypes.UINT, ctypes.c_size_t]
+kernel32.GlobalAlloc.restype = wintypes.HGLOBAL
+kernel32.GlobalLock.argtypes = [wintypes.HGLOBAL]
+kernel32.GlobalLock.restype = ctypes.c_void_p
+kernel32.GlobalUnlock.argtypes = [wintypes.HGLOBAL]
+
 
 def copy_to_clipboard(text: str) -> None:
-    user32.OpenClipboard(0)
-    user32.EmptyClipboard()
     data = text.encode("utf-16-le") + b"\x00\x00"
     handle = kernel32.GlobalAlloc(GMEM_MOVEABLE, len(data))
+    if not handle:
+        raise OSError("GlobalAlloc failed")
     locked = kernel32.GlobalLock(handle)
+    if not locked:
+        raise OSError("GlobalLock failed")
     ctypes.memmove(locked, data, len(data))
     kernel32.GlobalUnlock(handle)
-    user32.SetClipboardData(CF_UNICODETEXT, handle)
-    user32.CloseClipboard()
+    opened = False
+    for _ in range(8):
+        if user32.OpenClipboard(None):
+            opened = True
+            break
+        time.sleep(0.05)
+    if not opened:
+        raise OSError("OpenClipboard failed")
+    try:
+        user32.EmptyClipboard()
+        if not user32.SetClipboardData(CF_UNICODETEXT, handle):
+            raise OSError("SetClipboardData failed")
+    finally:
+        user32.CloseClipboard()
 
 
 def paste_keys() -> None:
@@ -232,8 +266,11 @@ class CadenceApp:
                 pass
         if text and self.target_hwnd:
             user32.SetForegroundWindow(self.target_hwnd)
-            insert_text(text)
-            self.set_status("Hold Ctrl+Shift, or hold this bar")
+            try:
+                insert_text(text)
+                self.set_status("Hold Ctrl+Shift, or hold this bar")
+            except Exception:
+                self.set_status("Could not paste · try again")
         elif text:
             self.set_status(text[:40])
         else:
