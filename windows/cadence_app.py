@@ -16,9 +16,11 @@ import tkinter as tk
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
+WHISPER_MODEL = "small.en"
 
 user32 = ctypes.WinDLL("user32", use_last_error=True)
 kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+_whisper = None
 
 
 class KEYBDINPUT(ctypes.Structure):
@@ -149,7 +151,7 @@ def clean_text(raw: str) -> str:
     return text
 
 
-def transcribe_wav(path: str) -> str:
+def _transcribe_sapi(path: str) -> str:
     safe = path.replace("'", "''")
     script = (
         "Add-Type -AssemblyName System.Speech;"
@@ -174,6 +176,37 @@ def transcribe_wav(path: str) -> str:
         return ""
 
 
+def _load_whisper():
+    global _whisper
+    if _whisper is None:
+        from faster_whisper import WhisperModel
+
+        _whisper = WhisperModel(WHISPER_MODEL, device="cpu", compute_type="int8")
+    return _whisper
+
+
+def _transcribe_whisper(path: str) -> str:
+    model = _load_whisper()
+    segments, _info = model.transcribe(
+        path,
+        language="en",
+        beam_size=5,
+        vad_filter=True,
+        condition_on_previous_text=False,
+    )
+    return " ".join(seg.text.strip() for seg in segments).strip()
+
+
+def transcribe_wav(path: str) -> str:
+    try:
+        text = _transcribe_whisper(path)
+        if text:
+            return text
+    except Exception:
+        pass
+    return _transcribe_sapi(path)
+
+
 def is_ctrl(key) -> bool:
     return key in (keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r)
 
@@ -195,10 +228,10 @@ class CadenceApp:
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
         self.root.configure(bg="#0f3d3a")
-        self.root.geometry("320x48+40+40")
+        self.root.geometry("340x48+40+40")
         self.label = tk.Label(
             self.root,
-            text="Hold Ctrl+Shift, or hold this bar",
+            text="Loading speech model…",
             fg="#f4efe4",
             bg="#0f3d3a",
             font=("Segoe UI", 11),
@@ -207,6 +240,14 @@ class CadenceApp:
         self.label.bind("<ButtonPress-1>", lambda _e: self.start_rec())
         self.label.bind("<ButtonRelease-1>", lambda _e: self.stop_rec())
         self.root.bind("<Escape>", lambda _e: self.quit())
+        threading.Thread(target=self.warmup, daemon=True).start()
+
+    def warmup(self) -> None:
+        try:
+            _load_whisper()
+            self.set_status("Hold Ctrl+Shift, or hold this bar")
+        except Exception:
+            self.set_status("Hold Ctrl+Shift (basic listener)")
 
     def set_status(self, text: str) -> None:
         self.root.after(0, lambda: self.label.config(text=text))
