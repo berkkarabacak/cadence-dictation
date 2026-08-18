@@ -11,8 +11,12 @@ from ctypes import wintypes
 
 import numpy as np
 import sounddevice as sd
-from pynput import keyboard
 import tkinter as tk
+
+try:
+    from pynput import keyboard
+except Exception:
+    keyboard = None
 
 SAMPLE_RATE = 16000
 CHANNELS = 1
@@ -208,10 +212,14 @@ def transcribe_wav(path: str) -> str:
 
 
 def is_ctrl(key) -> bool:
+    if keyboard is None:
+        return False
     return key in (keyboard.Key.ctrl, keyboard.Key.ctrl_l, keyboard.Key.ctrl_r)
 
 
 def is_shift(key) -> bool:
+    if keyboard is None:
+        return False
     return key in (keyboard.Key.shift, keyboard.Key.shift_l, keyboard.Key.shift_r)
 
 
@@ -229,6 +237,7 @@ class CadenceApp:
         self.root.attributes("-topmost", True)
         self.root.configure(bg="#0f3d3a")
         self.root.geometry("340x48+40+40")
+        idle = "Hold Ctrl+Shift, or hold this bar" if keyboard else "Hold this bar to talk"
         self.label = tk.Label(
             self.root,
             text="Loading speech model…",
@@ -240,14 +249,15 @@ class CadenceApp:
         self.label.bind("<ButtonPress-1>", lambda _e: self.start_rec())
         self.label.bind("<ButtonRelease-1>", lambda _e: self.stop_rec())
         self.root.bind("<Escape>", lambda _e: self.quit())
+        self.idle = idle
         threading.Thread(target=self.warmup, daemon=True).start()
 
     def warmup(self) -> None:
         try:
             _load_whisper()
-            self.set_status("Hold Ctrl+Shift, or hold this bar")
+            self.set_status(self.idle)
         except Exception:
-            self.set_status("Hold Ctrl+Shift (basic listener)")
+            self.set_status("Hold this bar to talk")
 
     def set_status(self, text: str) -> None:
         self.root.after(0, lambda: self.label.config(text=text))
@@ -309,16 +319,18 @@ class CadenceApp:
             user32.SetForegroundWindow(self.target_hwnd)
             try:
                 insert_text(text)
-                self.set_status("Hold Ctrl+Shift, or hold this bar")
+                self.set_status(self.idle)
             except Exception:
                 self.set_status("Could not paste · try again")
         elif text:
             self.set_status(text[:40])
         else:
             self.set_status("Heard nothing · try again")
-            self.root.after(2500, lambda: self.set_status("Hold Ctrl+Shift, or hold this bar"))
+            self.root.after(2500, lambda: self.set_status(self.idle))
 
     def on_press(self, key) -> None:
+        if keyboard is None:
+            return
         if key == keyboard.Key.esc:
             self.quit()
             return
@@ -330,6 +342,8 @@ class CadenceApp:
             self.start_rec()
 
     def on_release(self, key) -> None:
+        if keyboard is None:
+            return
         if is_ctrl(key):
             self.ctrl = False
         if is_shift(key):
@@ -354,9 +368,10 @@ class CadenceApp:
         os._exit(0)
 
     def run(self) -> None:
-        listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
-        listener.daemon = True
-        listener.start()
+        if keyboard is not None:
+            listener = keyboard.Listener(on_press=self.on_press, on_release=self.on_release)
+            listener.daemon = True
+            listener.start()
         self.root.mainloop()
 
 
