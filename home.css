@@ -154,8 +154,6 @@ body.sell .sell-stage-wrap {
   line-height: 1.45;
   color: #1B1916;
   background: #FBFBFB;
-  white-space: pre-wrap;
-  word-break: break-word;
 }
 .win11-typed:empty::before {
   content: attr(data-placeholder);
@@ -322,3 +320,4 @@ body.sell .sell-stage-wrap {
   margin-bottom: 8px;
 }
 .pf-mail em { color: #968E84; font-style: normal; margin-right: 8px; }
+.win11-typed { white-space: pre-wrap; word-break: break-word; }

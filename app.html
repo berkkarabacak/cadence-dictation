@@ -37,7 +37,7 @@
       <div>
         <p class="kicker">In-browser dictation</p>
         <h1>Hold. Speak. Send the clean line.</h1>
-        <p class="muted" style="margin-top:8px;max-width:36rem">This is a working microphone demo — Web Speech in the browser, then Cadence’s cleanup rules. Native apps type into whatever you have focused. Free is 2,000 cleaned words a week.</p>
+        <p class="muted" style="margin-top:8px;max-width:36rem">This is a working microphone demo — Web Speech in the browser, then Cadence’s cleanup rules. Native apps type into whatever you have focused. Forever trial. Pro turns the reminder off.</p>
       </div>
       <div class="stats"><span id="word-count">0 words</span> · <span id="app-status">Ready</span></div>
     </div>
@@ -51,7 +51,7 @@
         <button type="button" data-app-tone="very">Very casual</button>
       </div>
       <div class="toolbar-end">
-        <span class="plan-chip" id="plan-chip" aria-live="polite">0 / 2,000 words this week</span>
+        <span class="plan-chip" id="plan-chip" aria-live="polite">Trial · unlimited</span>
         <button class="btn btn-ghost btn-sm" id="toggle-listen" type="button">Click to toggle</button>
         <button class="btn btn-ghost btn-sm" id="copy-btn" type="button">Copy cleaned</button>
         <button class="btn btn-ghost btn-sm" id="clear-btn" type="button">Clear</button>
@@ -88,15 +88,15 @@
 
   <dialog id="paywall" class="paywall" aria-labelledby="paywall-title">
     <button type="button" class="paywall-close" id="paywall-close" aria-label="Close">×</button>
-    <p class="kicker">Free plan</p>
-    <h2 id="paywall-title">You've used this week's free words</h2>
-    <p class="paywall-body" id="paywall-body">The 2,000-word weekly allowance is used up. The counter resets next Monday. Start a 14-day Pro trial or go to checkout — both unlock unlimited dictation.</p>
+    <p class="kicker">Reminder</p>
+    <h2 id="paywall-title">Your Cadence trial has ended</h2>
+    <p class="paywall-body" id="paywall-body">You can keep talking. Nothing is locked. Pro just turns off this reminder.</p>
     <p class="paywall-remain" id="paywall-remain"></p>
     <div class="paywall-actions">
-      <button type="button" class="btn btn-ink" id="paywall-trial">Start 14-day Pro trial</button>
-      <a class="btn btn-ghost" id="paywall-checkout" href="checkout.html">Go to checkout</a>
+      <button type="button" class="btn btn-ink" id="paywall-dismiss">Close — keep using</button>
+      <a class="btn btn-ghost" id="paywall-checkout" href="checkout.html">Buy Pro</a>
     </div>
-    <p class="fine" style="margin-top:16px">Trial is local on this browser for now. No card is charged until Stripe is connected.</p>
+    <p class="fine" style="margin-top:16px">Close this anytime. The mic still works.</p>
   </dialog>
 
   <script src="config.js"></script>

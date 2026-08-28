@@ -179,6 +179,7 @@
   window.addEventListener("pointerup", stop);
   window.addEventListener("touchend", stop);
 
+
   document.querySelectorAll(".proof-grid img").forEach((img) => {
     img.addEventListener("error", () => {
       img.hidden = true;

@@ -57,14 +57,20 @@
     const raw = read(KEYS.until, "");
     if (!raw) return null;
     const end = Date.parse(raw);
-    if (!Number.isFinite(end)) return null;
-    if (Date.now() > end) return null;
+    if (!Number.isFinite(end)) {
+      write(KEYS.until, null);
+      return null;
+    }
+    if (Date.now() > end) {
+      write(KEYS.until, null);
+      return null;
+    }
     return raw;
   };
 
   const isPro = () => read(KEYS.plan, "free") === "pro" || Boolean(trialUntil());
+
   const remaining = () => Infinity;
-  const canDictate = () => true;
 
   const snapshot = () => {
     const until = trialUntil();
@@ -88,6 +94,10 @@
   const addWords = (n) => {
     const count = Math.max(0, Math.floor(Number(n) || 0));
     if (!count) return used();
+    if (isPro()) {
+      emit();
+      return used();
+    }
     ensureWeek();
     const next = used() + count;
     write(KEYS.words, String(next));
@@ -138,9 +148,17 @@
   const paintRemaining = () => {
     const nodes = document.querySelectorAll("[data-billing-remaining]");
     if (!nodes.length) return;
-    const text = read(KEYS.plan, "free") === "pro"
-      ? "You're on Pro — no reminders."
-      : "Forever trial. The app never locks. Pro removes the reminder.";
+    const snap = snapshot();
+    let text;
+    if (snap.isPro) {
+      text = snap.plan === "pro"
+        ? "You're on Pro — unlimited words."
+        : "Pro trial is on — unlimited words.";
+    } else if (snap.remaining === FREE_WEEKLY_LIMIT) {
+      text = `${FREE_WEEKLY_LIMIT.toLocaleString()} words left this week on Free.`;
+    } else {
+      text = `${snap.remaining.toLocaleString()} of ${FREE_WEEKLY_LIMIT.toLocaleString()} words left this week.`;
+    }
     nodes.forEach((el) => { el.textContent = text; });
   };
 
@@ -175,13 +193,24 @@
       note.textContent = text;
       note.classList.toggle("ok", Boolean(ok));
     };
+
+    try {
+      if (sessionStorage.getItem("cadence_just_unlocked") === "paid") {
+        sessionStorage.removeItem("cadence_just_unlocked");
+        showNote("You're on Pro. Unlimited dictation is on in this browser.", true);
+      }
+    } catch { /* */ }
+
     root.querySelectorAll("[data-checkout-pay]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const plan = btn.getAttribute("data-checkout-pay");
         const url = paymentLink(plan);
-        if (url) { window.location.href = url; return; }
-        activatePro();
-        showNote("Payment isn't connected yet — Pro is on in this browser so the reminder stays off.", true);
+        if (url) {
+          window.location.href = url;
+          return;
+        }
+        startTrial();
+        showNote("Payment isn't connected yet — your trial is on so you can keep working.", true);
         window.setTimeout(() => { window.location.href = "app.html?pro=1"; }, 1200);
       });
     });
@@ -202,10 +231,23 @@
     remaining,
     used,
     isPro,
-    canDictate,
-    isExpired: () => false,
-    isNagDue: () => false,
-    snoozeNag: () => {},
+    isExpired: () => {
+      const raw = (function(){ try { return localStorage.getItem("cadence_pro_until") || ""; } catch(e) { return ""; } })();
+      if (!raw) return false;
+      const end = Date.parse(raw);
+      return Number.isFinite(end) && Date.now() > end && ((function(){ try { return localStorage.getItem("cadence_plan") || "free"; } catch(e) { return "free"; } })() !== "pro");
+    },
+    canDictate: () => true,
+    isNagDue: () => {
+      try {
+        if (localStorage.getItem("cadence_plan") === "pro") return false;
+        if (sessionStorage.getItem("cadence_nag_snooze") === "1") return false;
+        const raw = localStorage.getItem("cadence_pro_until") || "";
+        const end = Date.parse(raw);
+        return Number.isFinite(end) && Date.now() > end;
+      } catch (e) { return false; }
+    },
+    snoozeNag: () => { try { sessionStorage.setItem("cadence_nag_snooze", "1"); } catch (e) {} },
     startTrial,
     activatePro,
     reset,

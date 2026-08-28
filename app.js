@@ -13,6 +13,7 @@
     /\bkind of\b/gi,
     /\bat the end of the day\b/gi,
   ];
+  const CORRECTION = /\b(?:wait(?:\s+no)?|no wait|sorry|actually|i mean|not \w+ (?:the )?(?:following )?)\b/i;
 
   function collapseRepeats(text) {
     return text.replace(/\b(\w+)(?:\s+\1\b)+/gi, "$1");
@@ -24,26 +25,30 @@
     t = t.replace(/\b[\w']+\b/g, (word, offset, full) => {
       const lower = word.toLowerCase();
       if (!FILLERS.has(lower)) return word;
+      // keep "like" when it is a verb / comparison
       if (lower === "like") {
         const before = full.slice(Math.max(0, offset - 12), offset).toLowerCase();
         if (/\b(i|we|they|you|would|looks?|feels?|sounds?)\s+$/.test(before)) return word;
       }
-      if (lower === "actually") return word;
+      if (lower === "actually") return word; // handled as correction marker later
       return "";
     });
     return t.replace(/\s+/g, " ").trim();
   }
 
   function applyCorrections(text) {
+    // "X wait no Y" / "X actually Y" / "not Tuesday the following Wednesday"
     let t = text;
     t = t.replace(/\bnot\s+(\w+)(?:\s+the)?\s+following\s+(\w+)/gi, "$2");
     t = t.replace(/\b(?:wait(?:\s+no)?|no wait|sorry)\s+/gi, "§ ");
     t = t.replace(/\bactually\s+/gi, "§ ");
+    // keep text after last § in a clause
     t = t.split(/(?<=[.!?])\s+/).map((clause) => {
       if (!clause.includes("§")) return clause;
       const parts = clause.split("§").map((s) => s.trim()).filter(Boolean);
       return parts[parts.length - 1] || clause;
     }).join(" ");
+    // "let's meet at 5 actually 6" already split; also "end of week sorry end of day Thursday"
     t = t.replace(/\bend of week\s+(?:end of day\s+)?/gi, "end of day ");
     return t.replace(/\s+/g, " ").trim();
   }
@@ -52,8 +57,10 @@
     let t = text.trim();
     if (!t) return "";
     t = t.replace(/\s+/g, " ");
+    // light question detection
     const qStart = /^(can|could|would|will|do|does|did|is|are|was|were|what|when|where|why|how|who|should)\b/i;
     const sentences = [];
+    // split on long conjunctions into sentences when it looks like a new thought
     const chunks = t.split(/\s+(?:and then|also)\s+/i);
     chunks.forEach((chunk, i) => {
       let c = chunk.trim();
@@ -114,6 +121,7 @@
     return t.trim();
   }
 
+
   const rawEl = $("#raw-out");
   const cleanEl = $("#clean-out");
   const composer = $("#composer");
@@ -143,28 +151,18 @@
   };
 
   const hidePaywall = () => {
+    if (Billing && Billing.snoozeNag) Billing.snoozeNag();
     if (!paywall) return;
     if (typeof paywall.close === "function" && paywall.open) paywall.close();
     else paywall.removeAttribute("open");
   };
 
-  const showPaywall = ({ needed } = {}) => {
+  const showPaywall = () => {
     if (!paywall || !Billing) return;
-    const left = Billing.remaining();
-    const limit = Billing.FREE_WEEKLY_LIMIT;
-    const leftLabel = Number.isFinite(left) ? left.toLocaleString() : "unlimited";
-    if (paywallRemain) {
-      paywallRemain.textContent = Number.isFinite(left)
-        ? `${leftLabel} of ${limit.toLocaleString()} words left this week`
-        : "Pro · unlimited";
-    }
+    if (Billing.isPro && Billing.isPro()) return;
+    if (paywallRemain) paywallRemain.textContent = "Close this and keep talking. Nothing is locked.";
     if (paywallBody) {
-      if (!Number.isFinite(left) || left <= 0) {
-        paywallBody.textContent = `You've reached the ${limit.toLocaleString()}-word free allowance for this week. The counter resets next Monday. Start a 14-day Pro trial or go to checkout — both unlock unlimited dictation. Nothing from this take was added.`;
-      } else {
-        const need = Number(needed) || 0;
-        paywallBody.textContent = `This take is ${need.toLocaleString()} cleaned words. You have ${leftLabel} of ${limit.toLocaleString()} left this week, so it was not added. Shorten it, wait until next Monday, or unlock Pro.`;
-      }
+      paywallBody.textContent = "Your trial ended. Cadence still works, same as before. Pro just turns off this reminder.";
     }
     if (typeof paywall.showModal === "function") {
       if (!paywall.open) paywall.showModal();
@@ -173,12 +171,7 @@
     }
   };
 
-  const canAccept = (n) => {
-    if (!Billing) return true;
-    if (Billing.isPro()) return true;
-    if (n <= 0) return true;
-    return n <= Billing.remaining();
-  };
+  const canAccept = () => true;
 
   const paint = () => {
     const raw = spoken();
@@ -200,14 +193,10 @@
     }
     const cleaned = cleanTranscript(piece, tone);
     const n = Billing ? Billing.countWords(cleaned) : 0;
-    if (!canAccept(n)) {
-      showPaywall({ needed: n });
-      paint();
-      return false;
-    }
     committed = [committed, piece].filter(Boolean).join(" ");
     if (n && Billing) Billing.addWords(n);
     paint();
+    if (Billing && Billing.isNagDue && Billing.isNagDue()) showPaywall();
     return true;
   };
 
@@ -246,12 +235,7 @@
     }
   });
 
-  const gated = () => {
-    if (!Billing || Billing.isPro()) return false;
-    if (Billing.remaining() > 0) return false;
-    showPaywall();
-    return true;
-  };
+  const gated = () => false;
 
   const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
   if (!SpeechRecognition) {
@@ -275,15 +259,7 @@
       }
       session = (final + interim).trim();
       paint();
-      if (final.trim() && Billing && !Billing.isPro()) {
-        const n = Billing.countWords(cleanTranscript(final.trim(), tone));
-        if (n > Billing.remaining()) {
-          session = "";
-          stop();
-          showPaywall({ needed: n });
-          paint();
-        }
-      }
+      /* never interrupt a take — WinRAR trial */
     };
     rec.onerror = (ev) => {
       if (banner) {
@@ -376,6 +352,7 @@
   } catch { /* */ }
 
   paint();
+  if (Billing && Billing.isNagDue && Billing.isNagDue()) showPaywall();
   window.CadenceClean = { cleanTranscript };
   window.CadenceApp = {
     simulate(text) {

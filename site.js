@@ -2,12 +2,12 @@
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
-  const nav = $("#nav");
+  const nav = $(".nav");
   if (nav) {
     const onScroll = () => nav.classList.toggle("is-scrolled", window.scrollY > 8);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    $("#nav-toggle")?.addEventListener("click", () => nav.classList.toggle("is-open"));
+    $(".nav-toggle")?.addEventListener("click", () => nav.classList.toggle("is-open"));
   }
 
   $$(".faq-item button").forEach((btn) => {
@@ -225,6 +225,7 @@
     const r = Number(rate.value);
     $("#roi-hours-val") && ($("#roi-hours-val").textContent = h.toFixed(1));
     $("#roi-rate-val") && ($("#roi-rate-val").textContent = r.toFixed(0));
+    // Typical conversation ~220 wpm vs ~45 wpm typing ≈ 75% of typing time returned
     const savedMonth = h * 0.75 * 22;
     const annual = savedMonth * r * 12 - 144;
     $("#roi-hours-saved") && ($("#roi-hours-saved").textContent = Math.round(savedMonth) + " hrs");
